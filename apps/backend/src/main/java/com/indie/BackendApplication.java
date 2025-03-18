@@ -1,4 +1,4 @@
-package indie.backend;
+package com.indie;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

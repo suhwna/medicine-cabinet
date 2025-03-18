@@ -1,0 +1,29 @@
+spring:
+    datasource:
+        url: jdbc:postgresql://211.188.59.175:5432/indie  # DB ?? URL
+        username: postgres  # DB 사용자명
+        password: Egis2395!@  # DB 비밀번호
+        driver-class-name: org.postgresql.Driver  # PostgreSQL JDBC 드라이버
+        hikari:
+            maximum-pool-size: 3  # HikariCP 커넥션 풀 크기
+            minimum-idle: 1  # 최소 IDLE 커넥션 수
+#            connection-timeout: 30000  # 커넥션 타임아웃 (30초)
+#            idle-timeout: 600000  # 아이들 타임아웃 (10분)
+#            max-lifetime: 1800000  # 커넥션 최대 수명 (30분)
+
+    jpa:
+        hibernate:
+            ddl-auto: update  # 개발 환경에서만 'update'로 설정, 운영 환경에서는 'none' 또는 'validate'로 설정
+        show-sql: true  # SQL 쿼리 출력 여부
+        properties:
+            hibernate:
+                format_sql: true  # SQL 포맷팅 여부
+#                dialect: org.hibernate.dialect.PostgreSQLDialect  # Hibernate Dialect 설정
+        database: postgresql # 데이터베이스 종류
+
+    server:
+        port: 8080  # 서버 포트 설정
+
+    logging:
+        level:
+            org.springframework.web: DEBUG  # HTTP 요청/응답 로그 레벨 설정
