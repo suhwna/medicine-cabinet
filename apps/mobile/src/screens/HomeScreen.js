@@ -40,6 +40,7 @@ export default function HomeScreen({ navigation }) {
             ㅎㅇ
             </Text>
             <Button title="로그아웃" onPress={logout} />
+            
         </View>
     );
 }

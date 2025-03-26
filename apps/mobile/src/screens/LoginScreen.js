@@ -36,6 +36,10 @@ export default function LoginScreen({ navigation }) {
                 secureTextEntry
             />
             <Button title="로그인" onPress={handleLogin} />
+            <Button
+                title="회원가입"
+                onPress={() => navigation.replace('Signup')}
+            />
         </View>
     );
 }
