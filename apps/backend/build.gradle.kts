@@ -24,6 +24,7 @@ dependencies {
     // Spring Boot
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")     // JPA
 	implementation("org.springframework.boot:spring-boot-starter-web")          // Web
+	implementation("org.springframework.boot:spring-boot-starter-security:3.4.3")     // Spring Security
 	testImplementation("org.springframework.boot:spring-boot-starter-test")     // Test
 
 	// Lombok
@@ -37,8 +38,6 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.12.1")        // JUnit
 
     implementation("com.auth0:java-jwt:4.5.0")                                  // JWT
-
-    implementation("org.springframework.boot:spring-boot-starter-security")     // Spring Security
 
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.5")   // Spring MVC에서 Swagger UI 및 OpenAPI 문서 제공
 

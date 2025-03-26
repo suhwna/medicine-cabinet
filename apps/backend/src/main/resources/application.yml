@@ -2,7 +2,7 @@ spring:
     datasource:
         url: jdbc:postgresql://211.188.59.175:5432/indie  # DB ?? URL
         username: postgres  # DB 사용자명
-        password: Egis2395!@  # DB 비밀번호
+        password: "Egis2395!@"  # DB 비밀번호
         driver-class-name: org.postgresql.Driver  # PostgreSQL JDBC 드라이버
         hikari:
             maximum-pool-size: 3  # HikariCP 커넥션 풀 크기
@@ -10,6 +10,12 @@ spring:
 #            connection-timeout: 30000  # 커넥션 타임아웃 (30초)
 #            idle-timeout: 600000  # 아이들 타임아웃 (10분)
 #            max-lifetime: 1800000  # 커넥션 최대 수명 (30분)
+
+    jwt:
+        expiration:
+            access: 86400000  # Access Token 만료 시간 (1일)
+            refresh: 2592000000 # Access Token 만료 시간 (30일)
+        key: temp # JWT 서명 키
 
     jpa:
         hibernate:
@@ -27,3 +33,9 @@ spring:
     logging:
         level:
             org.springframework.web: DEBUG  # HTTP 요청/응답 로그 레벨 설정
+
+    data:
+        redis:
+            host: 211.188.59.175
+            port: 6379
+            password: "Egis2395!@"

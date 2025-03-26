@@ -1,28 +1,26 @@
-package com.indie.medicine.conf;
+package com.indie.medicine.cmm.conf;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * @description Swagger 설정 클래스
- * @packageName com.indie.medicine.conf
+ * @description  Swagger 설정 클래스
+ * @packageName com.indie.medicine.cmm.conf
  * @class SwaggerConfig.java
  * @author 개발2팀 정수환
- * @since 2025. 3. 18.
+ * @since 2025-03-20
  * @version 1.0
  * @see
  *
  * << 개정이력(Modification Information) >>
  * 수정일        수정자          수정내용
  * ----------   --------   ---------------------------
- * 2025. 3. 18.	정수환         최초 생성
+ * 2025-03-20	정수환         최초 생성
  *
  */
-
 @Configuration // 스프링 설정 클래스
 public class SwaggerConfig {
 
