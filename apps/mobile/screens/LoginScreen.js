@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Text, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native'; // 네비게이션 사용
 import api from '@services/api';
-import AsyncStorage from "@react-native-async-storage/async-storage";  // 로그인 서비스 호출
+import AsyncStorage from "@react-native-async-storage/async-storage"; // 토큰 저장할 때 사용
 
 export default function LoginScreen({ navigation }) {
     const [email, setEmail] = useState('jswwwwww@naver.com');
@@ -9,7 +10,13 @@ export default function LoginScreen({ navigation }) {
 
     const handleLogin = async () => {
         try {
-            const res = await api.post('/auth/login', { email, password });
+            // 이메일과 비밀번호가 입력되지 않았을 때
+            if (!email || !password) {
+                Alert.alert('로그인 실패', '이메일과 비밀번호를 모두 입력하세요.');
+                return;
+            }
+
+            const res = await api.post('/auth/login', { email, password }); // 로그인 요청
 
             const { accessToken, refreshToken } = res.data;
 

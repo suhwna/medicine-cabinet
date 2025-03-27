@@ -1,25 +1,13 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import RootNavigator from '@navigation/RootNavigator';  // 네비게이션 분리
 
-import LoginScreen from '@screens/LoginScreen';
-import HomeScreen from '@screens/HomeScreen';
-import SignupScreen from '@screens/SignupScreen';
-
-const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
-const Drawer = createDrawerNavigator();
-
-export default function App() {
+function App() {
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Login">
-                <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-                <Stack.Screen name="Signup" component={SignupScreen} options={{ headerShown: false }} />
-                <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-            </Stack.Navigator>
+            <RootNavigator />  {/* 분리된 네비게이션 사용 */}
         </NavigationContainer>
     );
 }
+
+export default App;
