@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'; // 토큰 
 
 // axios 인스턴스 생성
 const api = axios.create({
-    baseURL: 'http://localhost:8080', // 모바일 디바이스에서는 IP로 바꿔야 함
+    baseURL: 'http://192.168.0.29:8080', // 모바일 디바이스에서는 IP로 바꿔야 함
 });
 
 // 요청마다 토큰 자동 추가하는 인터셉터
@@ -77,6 +77,5 @@ api.interceptors.response.use(
         return Promise.reject(err);
     }
 );
-
 
 export default api;

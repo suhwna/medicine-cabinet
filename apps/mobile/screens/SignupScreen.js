@@ -19,12 +19,11 @@ export default function SignupScreen({ navigation }) {
                 password,
                 name,
             });
-
             Alert.alert('회원가입 완료', '로그인 화면으로 이동합니다.', [
                 { text: '확인', onPress: () => navigation.replace('Login') },
             ]);
         } catch (err) {
-            Alert.alert('회원가입 실패', '이미 가입된 이메일일 수 있습니다.');
+            Alert.alert('회원가입 실패', '이미 존재하는 이메일일 수 있습니다.');
         }
     };
 

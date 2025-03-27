@@ -1,6 +1,6 @@
-package com.indie.medicine.user.repository;
+package com.indie.medicine.mbr.repository;
 
-import com.indie.medicine.user.domain.Member;
+import com.indie.medicine.mbr.domain.Member;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -9,7 +9,7 @@ import java.util.UUID;
 
 /**
  * @description 사용자 Repository
- * @packageName com.indie.medicine.user.repository
+ * @packageName com.indie.medicine.mbr.repository
  * @class MemberRepository.java
  * @author 개발2팀 정수환
  * @since 2025-03-25

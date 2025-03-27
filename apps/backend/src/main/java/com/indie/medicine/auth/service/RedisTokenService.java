@@ -1,4 +1,4 @@
-package com.indie.medicine.user.service;
+package com.indie.medicine.auth.service;
 
 import java.time.Duration;
 
@@ -9,7 +9,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * @description Redis 토큰 서비스 클래스
- * @packageName com.indie.medicine.user.service
+ * @packageName com.indie.medicine.auth.service
  * @class RedisTokenService.java
  * @author 개발2팀 정수환
  * @since 2025-03-25

@@ -1,13 +1,14 @@
-package com.indie.medicine.user.service;
+package com.indie.medicine.auth.service;
 
 import com.indie.medicine.cmm.jwt.JwtTokenProvider;
-import com.indie.medicine.user.domain.Member;
-import com.indie.medicine.user.dto.LoginDTO;
-import com.indie.medicine.user.dto.LoginResponseDTO;
-import com.indie.medicine.user.repository.MemberRepository;
+import com.indie.medicine.mbr.domain.Member;
+import com.indie.medicine.auth.dto.LoginDTO;
+import com.indie.medicine.auth.dto.LoginResponseDTO;
+import com.indie.medicine.mbr.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,19 +35,19 @@ public class AuthenticationService {
     public LoginResponseDTO authenticate(LoginDTO loginDTO) {
         Member member = memberRepository.findByEmail(loginDTO.getEmail()) // 사용자 조회
                 .orElseThrow(() -> {
-                    throw new RuntimeException("아이디 또는 비밀번호가 올바르지 않습니다.");
+                    throw new UsernameNotFoundException("아이디 또는 비밀번호가 올바르지 않습니다.");
                 });
 
         if (!passwordEncoder.matches(loginDTO.getPassword(), member.getPassword())) { // 비밀번호 일치 여부 확인
-            throw new RuntimeException("아이디 또는 비밀번호가 올바르지 않습니다.");
+            throw new IllegalArgumentException("아이디 또는 비밀번호가 올바르지 않습니다.");
         }
 
-        redisTokenService.saveRefreshToken(member.getId().toString(), jwtTokenProvider.generateRefreshToken(member)); // 리프레시 토큰 저장
-        //redisTokenService.deleteRefreshToken(member.getId().toString());
+        String token = jwtTokenProvider.generateRefreshToken(member);
+        redisTokenService.saveRefreshToken(member.getId().toString(), token); // 리프레시 토큰 저장
 
         // 액세스 토큰과 리프레시 토큰 반환
         return LoginResponseDTO.builder()
-                .accessToken(jwtTokenProvider.generateToken(member))
+                .accessToken(token)
                 .refreshToken(redisTokenService.getRefreshToken(member.getId().toString()))
                 .build();
     }
@@ -59,16 +60,16 @@ public class AuthenticationService {
      * @param refreshToken 리프레시 토큰
      * @return LoginResponseDTO 토큰 응답 객체
      */
-    public LoginResponseDTO reissueAccessToken(String refreshToken) {
+    public LoginResponseDTO renewAccessToken(String refreshToken) {
         String id = jwtTokenProvider.getSubject(refreshToken); // 리프레시 토큰에서 사용자 ID 추출
 
         if (!redisTokenService.getRefreshToken(id).equals(refreshToken)) { // Redis 저장소에 저장된 리프레시 토큰과 요청된 리프레시 토큰 비교
-            throw new RuntimeException("리프레시 토큰이 올바르지 않습니다.");
+            throw new IllegalArgumentException("리프레시 토큰이 올바르지 않습니다.");
         }
 
         Member member = memberRepository.findById(Long.parseLong(id)) // 사용자 조회
                 .orElseThrow(() -> {
-                    throw new RuntimeException("사용자를 찾을 수 없습니다.");
+                    throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
                 });
 
         // 액세스 토큰 반환
@@ -87,6 +88,12 @@ public class AuthenticationService {
      */
     public void logout(String accessToken) {
         String id = jwtTokenProvider.getSubject(accessToken); // 액세스 토큰에서 사용자 ID 추출
+        String token = redisTokenService.getRefreshToken(id); // 리프레시 토큰 조회
+
+        if (token == null) {
+            throw new IllegalArgumentException("리프레시 토큰이 존재하지 않습니다.");
+        }
+
         redisTokenService.deleteRefreshToken(id); // 리프레시 토큰 삭제
     }
 }
