@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import api from '@api/api';
+import api from '@services/api';
 
 export default function HomeScreen({ navigation }) {
     const [user, setUser] = useState(null);
 
     // const getUser = async () => {
     //     try {
-    //         const res = await api.get('/users/me');
+    //         const res = await api.get('/mbr/{email}');
     //         setUser(res.data);
     //     } catch (err) {
     //         console.log(err);

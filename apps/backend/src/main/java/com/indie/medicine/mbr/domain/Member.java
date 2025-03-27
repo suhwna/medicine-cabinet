@@ -1,4 +1,4 @@
-package com.indie.medicine.user.domain;
+package com.indie.medicine.mbr.domain;
 
 import jakarta.persistence.*;
 
@@ -6,6 +6,22 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+
+/**
+ * @description 사용자 도메인 클래스
+ * @packageName com.indie.medicine.mbr.domain
+ * @class Member.java
+ * @author 개발2팀 정수환
+ * @since 2025-03-27
+ * @version 1.0
+ * @see
+ *
+ * << 개정이력(Modification Information) >>
+ * 수정일        수정자          수정내용
+ * ----------   --------   ---------------------------
+ * 2025-03-27	정수환         최초 생성
+ *
+ */
 @Entity
 @Getter
 public class Member {

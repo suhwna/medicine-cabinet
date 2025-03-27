@@ -2,7 +2,7 @@ package com.indie.medicine.cmm.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.indie.medicine.user.domain.Member;
+import com.indie.medicine.mbr.domain.Member;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,7 +11,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
-import java.time.Duration;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
@@ -77,7 +76,7 @@ public class JwtTokenProvider {
                 .withSubject(member.getId().toString())
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date(System.currentTimeMillis() + REFRESH_EXPIRATION_TIME))
-                .sign(Algorithm.HMAC256(SECRET_KEY));
+                .sign(Algorithm.HMAC512(SECRET_KEY));
     }
 
     /**

@@ -1,11 +1,8 @@
-import api from './api';
+import api from '@services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const login = async (email, password) => {
+export const authService = async (email, password) => {
     try {
-        const email = 'jswwwwww@naver.com';
-        const password = '1234';
-
         const res = await api.post('/auth/login', { email, password });
         console.log(res);
 
@@ -13,9 +10,6 @@ export const login = async (email, password) => {
 
         await AsyncStorage.setItem('accessToken', accessToken);
         await AsyncStorage.setItem('refreshToken', refreshToken);
-
-        // console.log(AsyncStorage)
-        //
         return true;
     } catch (err) {
         console.error('로그인 실패:', err);

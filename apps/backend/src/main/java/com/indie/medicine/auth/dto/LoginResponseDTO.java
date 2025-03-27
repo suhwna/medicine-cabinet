@@ -1,8 +1,7 @@
-package com.indie.medicine.user.dto;
+package com.indie.medicine.auth.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 /**
  * @description 로그인 응답 DTO 클래스

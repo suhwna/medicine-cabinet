@@ -1,14 +1,29 @@
-package com.indie.medicine.user.controller;
+package com.indie.medicine.auth.controller;
 
-import com.indie.medicine.user.dto.LoginDTO;
-import com.indie.medicine.user.dto.LoginResponseDTO;
-import com.indie.medicine.user.service.AuthenticationService;
+import com.indie.medicine.auth.dto.LoginDTO;
+import com.indie.medicine.auth.dto.LoginResponseDTO;
+import com.indie.medicine.auth.service.AuthenticationService;
 
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * @description 사용자 인증 컨트롤러
+ * @packageName com.indie.medicine.auth.controller
+ * @class AuthenticationController.java
+ * @author 개발2팀 정수환
+ * @since 2025-03-27
+ * @version 1.0
+ * @see
+ *
+ * << 개정이력(Modification Information) >>
+ * 수정일        수정자          수정내용
+ * ----------   --------   ---------------------------
+ * 2025-03-27	정수환         최초 생성
+ *
+ */
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -26,11 +41,7 @@ public class AuthenticationController {
      */
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginDTO loginDTO) {
-        try {
-            return ResponseEntity.ok(authenticationService.authenticate(loginDTO)); // 로그인 성공 시 토큰 반환
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build(); // 로그인 실패 시 400 에러 반환
-        }
+        return ResponseEntity.ok(authenticationService.authenticate(loginDTO)); // 로그인 성공 시 토큰 반환
     }
 
     /**
@@ -43,11 +54,7 @@ public class AuthenticationController {
      */
     @PostMapping("/refresh")
     public ResponseEntity<LoginResponseDTO> refreshAccessToken(@RequestHeader("Authorization") String header) {
-        try {
-            return ResponseEntity.ok(authenticationService.reissueAccessToken(header)); // 액세스 토큰 갱신 성공 시 토큰 반환
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build(); // 액세스 토큰 갱신 실패 시 400 에러 반환
-        }
+        return ResponseEntity.ok(authenticationService.renewAccessToken(header.substring(7))); // 액세스 토큰 갱신 성공 시 토큰 반환
     }
 
     /**
@@ -58,14 +65,8 @@ public class AuthenticationController {
      * @return void
      */
     @DeleteMapping("/logout")
-    public ResponseEntity<Void> logout(@RequestHeader("Authorization") String header) {
-        try {
-            String accessToken = header.replace("Bearer ", "");
-            authenticationService.logout(accessToken);
-            return ResponseEntity.ok().build(); // 로그아웃 성공
-        } catch (Exception e) {
-            return ResponseEntity.status(401).build(); // 토큰 에러 시 401
-        }
+    public void logout(@RequestHeader("Authorization") String header) {
+        authenticationService.logout(header.substring(7)); // 로그아웃
     }
 
 }
