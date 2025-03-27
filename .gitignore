@@ -177,3 +177,5 @@ gradle-app.setting
 apps/mobile/yarn.lock
 apps/mobile/yarn.lock
 apps/mobile/yarn.lock
+.DS_Store
+apps/mobile/package-lock.json
