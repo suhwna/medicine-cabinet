@@ -11,8 +11,8 @@ module.exports = function (api) {
                         '@constants': './constants',
                         '@screens': './screens',
                         '@services': './services',
-                        '@store': './store',
-                        '@styles': './styles'
+                        '@styles': './styles',
+                        '@navigation': './navigation'
                     },
                 },
             ],

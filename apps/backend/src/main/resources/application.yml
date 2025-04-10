@@ -36,6 +36,6 @@ spring:
 
     data:
         redis:
-            host: 211.188.59.175
+            host: localhost
             port: 6379
             password: "Egis2395!@"

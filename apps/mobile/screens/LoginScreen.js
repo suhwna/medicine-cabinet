@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Text, Alert } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Text, Alert, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native'; // 네비게이션 사용
 import api from '@services/api';
 import AsyncStorage from "@react-native-async-storage/async-storage"; // 토큰 저장할 때 사용
+import kakaoLogin from '@services/kakaoLogin'; // 카카오 로그인 서비스
 
 export default function LoginScreen({ navigation }) {
     const [email, setEmail] = useState('jswwwwww@naver.com');
@@ -17,7 +18,6 @@ export default function LoginScreen({ navigation }) {
             }
 
             const res = await api.post('/auth/login', { email, password }); // 로그인 요청
-
             const { accessToken, refreshToken } = res.data;
 
             await AsyncStorage.setItem('accessToken', accessToken);
@@ -31,6 +31,16 @@ export default function LoginScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
+            <View style={styles.top}>
+                <Image
+                    source={{ uri: 'https://cdn-icons-png.flaticon.com/512/4320/4320357.png' }}
+                    style={styles.logo}
+                    resizeMode="contain"
+                />
+                <Text style={styles.title}>약먹을시간이야!</Text>
+            </View>
+
+            {/* 입력 */}
             <TextInput
                 value={email}
                 onChangeText={setEmail}
@@ -45,16 +55,58 @@ export default function LoginScreen({ navigation }) {
                 secureTextEntry
                 style={styles.input}
             />
-            <Button title="로그인" onPress={handleLogin} />
-            <Button
-                title="회원가입"
-                onPress={() => navigation.replace('Signup')}
-            />
+
+            {/* 버튼 */}
+            <View style={styles.buttonWrap}>
+                <Button title="로그인" onPress={handleLogin} />
+                <View style={{ marginTop: 10 }} />
+                <Button title="카카오 로그인" onPress={kakaoLogin.handleKakaoLogin} />
+                <View style={{ marginTop: 10 }} />
+                <Button
+                    title="회원가입"
+                    onPress={() => navigation.replace('Signup')}
+                    color="#6c757d"
+                />
+            </View>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, justifyContent: 'center', padding: 20 },
-    input: { borderWidth: 1, borderColor: '#ccc', marginBottom: 10, padding: 8 },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 24,
+        backgroundColor: '#ffffff',
+    },
+    top: {
+        alignItems: 'center',
+        marginBottom: 24,
+    },
+    logo: {
+        width: 60,
+        height: 60,
+        marginBottom: 8,
+    },
+    title: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        color: '#222',
+        letterSpacing: 0.5,
+    },
+    input: {
+        width: '100%',
+        borderWidth: 1,
+        borderColor: '#ced4da',
+        borderRadius: 8,
+        padding: 12,
+        fontSize: 16,
+        marginBottom: 16,
+        backgroundColor: '#f8f9fa',
+    },
+    buttonWrap: {
+        width: '100%',
+        marginTop: 10,
+    },
 });
