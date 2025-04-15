@@ -60,7 +60,7 @@ export default function LoginScreen({ navigation }) {
             <View style={styles.buttonWrap}>
                 <Button title="로그인" onPress={handleLogin} />
                 <View style={{ marginTop: 10 }} />
-                <Button title="카카오 로그인" onPress={kakaoLogin.handleKakaoLogin} />
+                <Button title="카카오 로그인" onPress={kakaoLogin} />
                 <View style={{ marginTop: 10 }} />
                 <Button
                     title="회원가입"

@@ -39,3 +39,20 @@ spring:
             host: localhost
             port: 6379
             password: "Egis2395!@"
+
+# SpringDoc OpenAPI 설정
+springdoc:
+    api-docs:
+        enabled: true # API 문서화 활성화
+        path: /v3/api-docs  # Swagger JSON 엔드포인트 (기본값 그대로 써도 무방)
+    swagger-ui:
+        enabled: true # Swagger UI 활성화
+        path: /swagger-ui.html  # UI 접속 경로
+        display-request-duration: true  # 요청 시간 표시
+        doc-expansion: list  # 'none', 'list', 'full' 중 선택 (none이면 기본으로 닫힘)
+        try-it-out-enabled: true  # 기본으로 Try It Out 활성화
+        filter: false  # 검색창 활성화
+        operations-sorter: alpha  # 메서드 알파벳 순 정렬
+        tags-sorter: alpha  # 태그 정렬
+    default-produces-media-type: application/json # 기본 응답 미디어 타입
+    default-consumes-media-type: application/json # 기본 요청 미디어 타입

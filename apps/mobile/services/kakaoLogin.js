@@ -1,8 +1,8 @@
 import * as AuthSession from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Button, View } from 'react-native';
 import axios from 'axios';
+import { useEffect } from 'react';
 
 WebBrowser.maybeCompleteAuthSession(); // 필수 호출
 
@@ -11,16 +11,22 @@ const REDIRECT_URI = AuthSession.makeRedirectUri({ useProxy: true });
 
 const handleKakaoLogin = async () => {
     try {
+        console.log('카카오 로그인 시작');
+
         const authUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_REST_API_KEY}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
         const result = await AuthSession.startAsync({ authUrl });
+
+        console.log(result);
 
         if (result.type === 'success' && result.params.code) {
             const code = result.params.code;
 
-            const res = await axios.post('https://your-api.com/auth/oauth/kakao', {
+            const res = await api.post('/auth/kakao', {
                 code,
                 redirectUri: REDIRECT_URI,
             });
+
+            console.log(res);
 
             const { accessToken, refreshToken } = res.data;
             await AsyncStorage.setItem('accessToken', accessToken);
@@ -32,3 +38,5 @@ const handleKakaoLogin = async () => {
         console.error('카카오 로그인 실패:', err);
     }
 };
+
+export default handleKakaoLogin;

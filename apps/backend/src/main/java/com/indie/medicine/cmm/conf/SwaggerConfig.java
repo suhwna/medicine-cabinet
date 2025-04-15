@@ -1,7 +1,10 @@
 package com.indie.medicine.cmm.conf;
 
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,6 +43,13 @@ public class SwaggerConfig {
                         .termsOfService("http://swagger.io/terms/") // 서비스 약관
                         .contact(new io.swagger.v3.oas.models.info.Contact().name("정수환")) // 연락처
                         .license(new io.swagger.v3.oas.models.info.License().name("Apache 2.0") // 라이선스
-                                .url("http://springdoc.org"))); // 라이선스 URL
+                                .url("http://springdoc.org"))) // 라이선스 URL
+                .addSecurityItem(new SecurityRequirement().addList("bearerAuth")) // 보안 요구 사항 추가
+                .components(new Components() // Components 객체 생성
+                    .addSecuritySchemes("bearerAuth",
+                        new SecurityScheme()
+                            .type(SecurityScheme.Type.HTTP)
+                            .scheme("bearer")
+                            .bearerFormat("JWT")));
     }
 }

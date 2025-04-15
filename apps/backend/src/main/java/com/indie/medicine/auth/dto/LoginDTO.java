@@ -1,5 +1,6 @@
 package com.indie.medicine.auth.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
@@ -19,6 +20,9 @@ import lombok.Data;
  */
 @Data
 public class LoginDTO {
+    @Schema(description = "사용자 이메일", example = "test@example.com", required = true)
     private String email; // 사용자 이메일
+
+    @Schema(description = "사용자 비밀번호", example = "password123", required = true)
     private String password; // 사용자 비밀번호
 }

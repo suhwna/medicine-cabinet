@@ -60,11 +60,11 @@ public class SecurityConfig {
                 .formLogin(login -> login.disable()) // 폼 로그인 기능 비활성화
                 .httpBasic(httpBasic -> httpBasic.disable()) // HTTP 기본 인증 비활성화
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 관리 정책 설정
-                .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/auth/**").permitAll() // /auth/로 시작하는 URL은 인증 없이 접근 가능
-                    .anyRequest().authenticated() // 그 외의 URL은 인증 필요
-                )
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class) // JWT 인증 필터 추가
+//                .authorizeHttpRequests(auth -> auth
+//                    .requestMatchers("/auth/**").permitAll() // /auth/로 시작하는 URL은 인증 없이 접근 가능
+//                    .anyRequest().authenticated() // 그 외의 URL은 인증 필요
+//                )
+//                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class) // JWT 인증 필터 추가
                 .build();
     }
 

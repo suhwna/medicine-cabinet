@@ -4,8 +4,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '@services/api';
 
 export default function HomeScreen({ navigation }) {
-    const [user, setUser] = useState(null);
-
+    // const [user, setUser] = useState(null);
+    //
     // const getUser = async () => {
     //     try {
     //         const res = await api.get('/mbr/{email}');
@@ -14,7 +14,17 @@ export default function HomeScreen({ navigation }) {
     //         console.log(err);
     //     }
     // };
+    //
+    // useEffect(() => {
+    //
+    // }, []);
 
+    /**
+     *
+     * @description 로그아웃
+     * @author 개발2팀 정수환
+     * @since 2025-04-15
+     */
     const logout = async () => {
         try {
             const res = await api.delete('/auth/logout');
@@ -26,13 +36,7 @@ export default function HomeScreen({ navigation }) {
         } catch (err) {
             console.log('로그아웃 실패:', err);
         }
-
-
     };
-
-    useEffect(() => {
-
-    }, []);
 
     return (
         <View style={{ padding: 20 }}>

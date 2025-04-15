@@ -3,8 +3,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage'; // 토큰 
 
 // axios 인스턴스 생성
 const api = axios.create({
-    // baseURL: 'http://192.168.0.29:8080',
-    baseURL: 'http://192.168.219.109:8080' // mac 내부 ip
+    baseURL: 'http://192.168.0.29:8080',
+    // baseURL: 'http://192.168.219.109:8080' // mac 내부 ip
 });
 
 const kakaoJSKey = '855708ba40c928ec8bb366b3c674ef9f';

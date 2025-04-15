@@ -1,13 +1,14 @@
 {
   "expo": {
-    "name": "mobile",
-    "slug": "mobile",
+    "name": "MedicineBox",
+    "slug": "medicine-box",
     "owner": "jswwwwww",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
+    "scheme": "medicinebox",
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",

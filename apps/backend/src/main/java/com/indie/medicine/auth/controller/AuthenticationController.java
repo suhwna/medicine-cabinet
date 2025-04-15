@@ -4,6 +4,9 @@ import com.indie.medicine.auth.dto.LoginDTO;
 import com.indie.medicine.auth.dto.LoginResponseDTO;
 import com.indie.medicine.auth.service.AuthenticationService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
@@ -52,8 +55,9 @@ public class AuthenticationController {
      * @param header HTTP 요청 헤더
      * @return ResponseEntity<TokenResponse> 토큰 응답 객체
      */
+    @Operation(summary = "액세스 토큰 갱신", security = { @SecurityRequirement(name = "bearerAuth") })
     @PostMapping("/refresh")
-    public ResponseEntity<LoginResponseDTO> refreshAccessToken(@RequestHeader("Authorization") String header) {
+    public ResponseEntity<LoginResponseDTO> refreshAccessToken(@Parameter(hidden = true) @RequestHeader("Authorization") String header) {
         return ResponseEntity.ok(authenticationService.renewAccessToken(header.substring(7))); // 액세스 토큰 갱신 성공 시 토큰 반환
     }
 
@@ -64,8 +68,9 @@ public class AuthenticationController {
      * @param header HTTP Authorization 헤더
      * @return void
      */
+    @Operation(summary = "로그아웃", security = { @SecurityRequirement(name = "bearerAuth") })
     @DeleteMapping("/logout")
-    public void logout(@RequestHeader("Authorization") String header) {
+    public void logout(@Parameter(hidden = true) @RequestHeader("Authorization") String header) {
         authenticationService.logout(header.substring(7)); // 로그아웃
     }
 
