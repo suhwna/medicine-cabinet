@@ -1,39 +1,72 @@
 import * as AuthSession from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
+import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
+import api from '@services/api';
 import { useEffect } from 'react';
 
-WebBrowser.maybeCompleteAuthSession(); // 필수 호출
-
-const KAKAO_REST_API_KEY = '855708ba40c928ec8bb366b3c674ef9f'
-const REDIRECT_URI = AuthSession.makeRedirectUri({ useProxy: true });
+WebBrowser.maybeCompleteAuthSession();
 
 const handleKakaoLogin = async () => {
     try {
-        console.log('카카오 로그인 시작');
+        const KAKAO_REST_API_KEY = '855708ba40c928ec8bb366b3c674ef9f';
 
-        const authUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_REST_API_KEY}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
-        const result = await AuthSession.startAsync({ authUrl });
+        const discovery = {
+            authorizationEndpoint: 'https://kauth.kakao.com/oauth/authorize',
+            tokenEndpoint: 'https://kauth.kakao.com/oauth/token',
+        };
 
-        console.log(result);
+        const REDIRECT_URI = AuthSession.makeRedirectUri({
+            useProxy: true,
+            native: `medicinebox://redirect`,  // 만약 커스텀 스킴도 쓰는 경우
+        });
 
-        if (result.type === 'success' && result.params.code) {
-            const code = result.params.code;
 
-            const res = await api.post('/auth/kakao', {
-                code,
-                redirectUri: REDIRECT_URI,
-            });
+        // const REDIRECT_URI = 'https://auth.expo.io/@jswwwwww/medicine-box';
 
-            console.log(res);
+        console.log('Platform:', Platform.OS);
 
-            const { accessToken, refreshToken } = res.data;
-            await AsyncStorage.setItem('accessToken', accessToken);
-            await AsyncStorage.setItem('refreshToken', refreshToken);
+        console.log('🔗 redirect URI:', REDIRECT_URI);
 
-            console.log('카카오 로그인 완료!');
-        }
+
+        // const request = new AuthSession.AuthRequest({
+        //     clientId: KAKAO_REST_API_KEY,
+        //     responseType: AuthSession.ResponseType.Code,
+        //     scopes: [],
+        //     redirectUri: REDIRECT_URI,
+        // });
+        //
+        // console.log('카카오 로그인 시작');
+
+
+        // console.log(REDIRECT_URI)
+
+
+        // const result = await request.promptAsync(discovery, { useProxy: true });
+
+        // console.log(result);
+
+
+        // if (result.type === 'success' && result.params.code) {
+        //     const code = result.params.code;
+        //
+        //     console.log(code)
+        //
+        //     // axios 인스턴스로 백엔드에 로그인 요청
+        //     // const res = await api.post('/auth/kakao', {
+        //     //     code,
+        //     //     redirectUri: REDIRECT_URI
+        //     // });
+        //     //
+        //     // const { accessToken, refreshToken } = res.data;
+        //     //
+        //     // await AsyncStorage.setItem('accessToken', accessToken);
+        //     // await AsyncStorage.setItem('refreshToken', refreshToken);
+        //
+        //     console.log('카카오 로그인 완료!');
+        // } else {
+        //     console.log('카카오 로그인 취소 또는 실패');
+        // }
     } catch (err) {
         console.error('카카오 로그인 실패:', err);
     }
