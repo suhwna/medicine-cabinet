@@ -79,6 +79,55 @@ public class AuthenticationService {
                 .build();
     }
 
+//    /**
+//     *
+//     * @description 카카오 로그인 메서드
+//     * @author 개발2팀 정수환
+//     * @since 2025. 4. 10.
+//     * @param code 카카오 인증 코드
+//     * @param redirectUri 리다이렉트 URI
+//     * @return LoginResponseDTO 로그인 응답 객체
+//     */
+//    public LoginResponseDTO loginKakao(String code, String redirectUri) {
+//        KakaoTokenResponse tokenResponse = kakaoOauthService.requestAccessToken(code, redirectUri);
+//        KakaoUserProfile profile = kakaoOauthService.requestUserProfile(tokenResponse.getAccess_token());
+//
+//        // DB에 사용자 존재 확인 후 JWT 생성
+//        Member member = memberRepository.findByEmail(profile.getEmail())
+//                .orElseGet(() -> memberRepository.save(Member.from(profile)));
+//
+//        String accessToken = jwtProvider.createAccessToken(member);
+//        String refreshToken = jwtProvider.createRefreshToken(member);
+//
+//        return new LoginResponseDTO(accessToken, refreshToken);
+//    }
+//
+//    public KakaoTokenResponse requestAccessToken(String code, String redirectUri) {
+//        RestTemplate rest = new RestTemplate();
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+//
+//        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+//        params.add("grant_type", "authorization_code");
+//        params.add("client_id", "REST_API_KEY");
+//        params.add("redirect_uri", redirectUri);
+//        params.add("code", code);
+//
+//        HttpEntity<?> entity = new HttpEntity<>(params, headers);
+//        ResponseEntity<KakaoTokenResponse> response = rest.postForEntity("https://kauth.kakao.com/oauth/token", entity, KakaoTokenResponse.class);
+//        return response.getBody();
+//    }
+//
+//    public KakaoUserProfile requestUserProfile(String accessToken) {
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setBearerAuth(accessToken);
+//        HttpEntity<?> entity = new HttpEntity<>(headers);
+//
+//        RestTemplate rest = new RestTemplate();
+//        ResponseEntity<KakaoUserProfile> response = rest.exchange("https://kapi.kakao.com/v2/user/me", HttpMethod.GET, entity, KakaoUserProfile.class);
+//        return response.getBody();
+//    }
+
     /**
      *
      * @description 로그아웃 메소드

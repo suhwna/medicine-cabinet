@@ -1,8 +1,8 @@
 spring:
     datasource:
-        url: jdbc:postgresql://211.188.59.175:5432/indie  # DB ?? URL
-        username: postgres  # DB 사용자명
-        password: "Egis2395!@"  # DB 비밀번호
+        url: jdbc:postgresql://203.228.54.37:15432/medicine  # DB ?? URL
+        username: indie  # DB 사용자명
+        password: "indie7942"  # DB 비밀번호
         driver-class-name: org.postgresql.Driver  # PostgreSQL JDBC 드라이버
         hikari:
             maximum-pool-size: 3  # HikariCP 커넥션 풀 크기
