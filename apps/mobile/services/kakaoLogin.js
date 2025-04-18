@@ -1,39 +1,52 @@
+import React, { useEffect } from 'react';
+import { Button, Alert } from 'react-native';
 import * as AuthSession from 'expo-auth-session';
-import * as Linking from 'expo-linking';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import api from '@services/api';
 
-// Android, dev-client 기준 redirect URI 생성
-const redirectUri = AuthSession.makeRedirectUri({
-    native: 'medicinebox://redirect',  // 앱 스킴과 매칭되어야 함
-    useProxy: false,
-});
+const REST_API_KEY = '855708ba40c928ec8bb366b3c674ef9f';
+const REDIRECT_URI = "https://auth.expo.io/@jswwwwww/medicine-box";
 
-export default async function kakaoLogin() {
-    const request = new AuthSession.AuthRequest({
-        clientId: '855708ba40c928ec8bb366b3c674ef9f',
-        responseType: 'code',
-        redirectUri,
-        scopes: [],
-    });
+const discovery = {
+    authorizationEndpoint: 'https://kauth.kakao.com/oauth/authorize',
+    tokenEndpoint: 'https://kauth.kakao.com/oauth/token',
+};
 
-    await request.makeAuthUrlAsync(); // 내부적으로 URL 준비
-
-    const result = await request.promptAsync(
+export default function KakaoLoginButton({ onSuccess }) {
+    const [request, response, promptAsync] = AuthSession.useAuthRequest(
         {
-            authorizationEndpoint: 'https://kauth.kakao.com/oauth/authorize',
-            tokenEndpoint: 'https://kauth.kakao.com/oauth/token',
+            clientId: REST_API_KEY,
+            redirectUri: REDIRECT_URI,
+            responseType: 'code',
         },
-        {
-            useProxy: false,
-        }
+        discovery
     );
 
-    console.log('🔥 카카오 로그인 결과:', result);
+    useEffect(() => {
+        const handleKakaoLogin = async () => {
+            if (response?.type === 'success') {
+                const code = response.params.code;
+                console.log('✅ Kakao auth code:', code);
 
-    if (result.type === 'success') {
-        const code = result.params.code;
-        alert(`인가코드: ${code}`);
-        // 여기서 access_token 교환 로직 넣으면 됨
-    } else {
-        alert('카카오 로그인 실패함!');
-    }
+                try {
+                    const res = await api.post('/auth/kakao-login', { code });
+                    const { accessToken, refreshToken } = res.data;
+
+                    await AsyncStorage.setItem('accessToken', accessToken);
+                    await AsyncStorage.setItem('refreshToken', refreshToken);
+
+                    if (onSuccess) onSuccess();
+                } catch (err) {
+                    console.error('❌ 카카오 로그인 실패:', err);
+                    Alert.alert('카카오 로그인 실패', '다시 시도해주세요.');
+                }
+            }
+        };
+
+        handleKakaoLogin();
+    }, [response]);
+
+    return (
+        <Button title="카카오 로그인" onPress={() => promptAsync()} />
+    );
 }

@@ -1,23 +1,21 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Text, Alert, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native'; // 네비게이션 사용
+import { View, TextInput, Button, StyleSheet, Text, Alert, Image, Modal } from 'react-native';
 import api from '@services/api';
-import AsyncStorage from "@react-native-async-storage/async-storage"; // 토큰 저장할 때 사용
-import kakaoLogin from '@services/kakaoLogin'; // 카카오 로그인 서비스
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import KakaoLogin from '@services/kakaoLogin';
 
 export default function LoginScreen({ navigation }) {
-    const [email, setEmail] = useState('jswwwwww@naver.com');
-    const [password, setPassword] = useState('1234');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [showKakao, setShowKakao] = useState(false); // 모달 제어
 
     const handleLogin = async () => {
+        if (!email || !password) {
+            Alert.alert('로그인 실패', '이메일과 비밀번호를 입력하세요.');
+            return;
+        }
         try {
-            // 이메일과 비밀번호가 입력되지 않았을 때
-            if (!email || !password) {
-                Alert.alert('로그인 실패', '이메일과 비밀번호를 모두 입력하세요.');
-                return;
-            }
-
-            const res = await api.post('/auth/login', { email, password }); // 로그인 요청
+            const res = await api.post('/auth/login', { email, password });
             const { accessToken, refreshToken } = res.data;
 
             await AsyncStorage.setItem('accessToken', accessToken);
@@ -26,6 +24,22 @@ export default function LoginScreen({ navigation }) {
             navigation.replace('Home');
         } catch (err) {
             Alert.alert('로그인 실패', '이메일 또는 비밀번호를 확인해주세요.');
+        }
+    };
+
+    const handleKakaoSuccess = async (code) => {
+        try {
+            const response = await api.post('/auth/kakao-login', { code });
+            const { accessToken, refreshToken } = response.data;
+
+            await AsyncStorage.setItem('accessToken', accessToken);
+            await AsyncStorage.setItem('refreshToken', refreshToken);
+
+            setShowKakao(false);
+            navigation.replace('Home');
+        } catch (error) {
+            Alert.alert('카카오 로그인 실패', '문제가 발생했습니다.');
+            setShowKakao(false);
         }
     };
 
@@ -40,7 +54,6 @@ export default function LoginScreen({ navigation }) {
                 <Text style={styles.title}>약먹을시간이야!</Text>
             </View>
 
-            {/* 입력 */}
             <TextInput
                 value={email}
                 onChangeText={setEmail}
@@ -56,11 +69,10 @@ export default function LoginScreen({ navigation }) {
                 style={styles.input}
             />
 
-            {/* 버튼 */}
             <View style={styles.buttonWrap}>
                 <Button title="로그인" onPress={handleLogin} />
                 <View style={{ marginTop: 10 }} />
-                <Button title="카카오 로그인" onPress={kakaoLogin} />
+                <Button title="카카오 로그인" onPress={() => setShowKakao(true)} />
                 <View style={{ marginTop: 10 }} />
                 <Button
                     title="회원가입"
@@ -68,6 +80,14 @@ export default function LoginScreen({ navigation }) {
                     color="#6c757d"
                 />
             </View>
+
+            {/* 카카오 로그인 WebView를 모달로 */}
+            <Modal visible={showKakao} animationType="slide">
+                <KakaoLogin
+                    onLoginSuccess={handleKakaoSuccess}
+                    onClose={() => setShowKakao(false)}
+                />
+            </Modal>
         </View>
     );
 }
